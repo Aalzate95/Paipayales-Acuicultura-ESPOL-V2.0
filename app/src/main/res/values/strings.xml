@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Paipayales</string>
+    <string name="add_pool">Agregar Piscina</string>
+    <string name="empty_not_saved">No se grabó la piscina.</string>
+    <string name="sync_measurements_success">Mediciones grabadas.</string>
+    <string name="sync_measurements_empty">No se encontraron mediciones.</string>
+    <string name="sync_measurements_error">Error al conectar al servidor.</string>
+</resources>

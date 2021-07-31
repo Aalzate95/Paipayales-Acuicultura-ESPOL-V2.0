@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/row_data"
+android:background="#F0F7F7"
+android:padding="5dp">
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:id="@+id/txt_PiscinaName"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginEnd="4dp"
+    android:text="Piscina" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:id="@+id/txt_Ox"
+
+    android:layout_marginRight="4dp"
+    android:layout_marginEnd="4dp"
+    android:text="0 mg/l" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:id="@+id/txt_Ph"
+    android:layout_marginRight="4dp"
+    android:layout_marginEnd="4dp"
+    android:text="70" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:id="@+id/txt_Temp"
+    android:text="0 °C" />
+</TableRow>
