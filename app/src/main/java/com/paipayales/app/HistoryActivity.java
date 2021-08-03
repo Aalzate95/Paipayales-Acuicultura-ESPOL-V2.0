@@ -1,8 +1,11 @@
 package com.paipayales.app;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import android.app.DatePickerDialog;
@@ -15,6 +18,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Button;
@@ -32,9 +36,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.paipayales.app.db.entity.Pool;
+import com.paipayales.app.viewmodel.PoolViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class HistoryActivity extends AppCompatActivity {
@@ -45,8 +52,11 @@ public class HistoryActivity extends AppCompatActivity {
     private Button btn_Export;
     private EditText btn_date1;
     private EditText btn_date2;
-
-
+    private Spinner mDropdown;
+    List<Pool> poolsList;
+    private ArrayList<Pool> mPoolListInSpinner;
+    private Pool mSelectedPoolInSpinner;
+    private PoolViewModel mPoolViewModel;
     private static final String CERO = "0";
     private static final String BARRA = "/";
 
@@ -76,10 +86,40 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         //get the spinner from the xml.
-        Spinner dropdown = findViewById(R.id.list_Piscinas);
-        String[] items = new String[]{"Piscinas", "Piscina2", "Piscinathree",};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        mDropdown =  findViewById(R.id.list_Piscinas);
+
+        mPoolListInSpinner = new ArrayList<Pool>();
+
+        mPoolViewModel = new ViewModelProvider(this).get(PoolViewModel.class);
+
+        mPoolViewModel.getAllPools().observe(this, new Observer<List<Pool>>() {
+            @Override
+            public void onChanged(@Nullable final List<Pool> pools) {
+
+                poolsList = pools;
+
+                mPoolListInSpinner = new ArrayList<Pool>();
+                ArrayList<String> itemsList = new ArrayList<String>();
+
+                for (Pool pool : pools) {
+                    mPoolListInSpinner.add(pool);
+                    itemsList.add(pool.name);
+                }
+
+                String[] items = new String[itemsList.size()];
+                itemsList.toArray(items);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, items);
+
+                mDropdown.setAdapter(adapter);
+            }
+        });
+
+//        mSelectedPoolInSpinner = null;
+//        setSpinnerOnItemSelectedListener();
+//        String[] items = new String[]{"Piscinas", "Piscina2", "Piscinathree",};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//        dropdown.setAdapter(adapter);
 
 
         //History Chart
@@ -195,6 +235,23 @@ public class HistoryActivity extends AppCompatActivity {
         }, anio, mes, dia);
         //Muestro el widget
         recogerFecha.show();
+    }
+    private void setSpinnerOnItemSelectedListener() {
+        mDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    mSelectedPoolInSpinner = null;
+                } else {
+                    mSelectedPoolInSpinner = mPoolListInSpinner.get(position - 1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mSelectedPoolInSpinner = null;
+            }
+        });
     }
 
 }

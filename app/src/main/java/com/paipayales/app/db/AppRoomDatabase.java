@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
         Device.class,
         Measurement.class,},
         version = 1, exportSchema = false)
+
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -34,22 +35,22 @@ public abstract class AppRoomDatabase extends RoomDatabase {
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
+        super.onOpen(db);
 
-            // If you want to keep data through app restarts,
-            // comment out the following block
-            databaseWriteExecutor.execute(() -> {
-                // Populate the database in the background.
-                // If you want to start with more words, just add them.
-                PoolDao dao = INSTANCE.poolDao();
-                dao.deleteAll();
+        // If you want to keep data through app restarts,
+        // comment out the following block
+        databaseWriteExecutor.execute(() -> {
+            // Populate the database in the background.
+            // If you want to start with more words, just add them.
+            PoolDao dao = INSTANCE.poolDao();
+            dao.deleteAll();
 
-                // Data de ejemplo
-                Pool pool = new Pool("Piscina A", "10000");
-                dao.insert(pool);
-                pool = new Pool("Piscina B", "20000");
-                dao.insert(pool);
-            });
+            // Data de ejemplo
+//            Pool pool = new Pool("Piscina A", "10000");
+//            dao.insert(pool);
+//            pool = new Pool("Piscina B", "20000");
+//            dao.insert(pool);
+        });
         }
     };
 
